@@ -1,2 +1,15 @@
 tmpclaude*
 tmp*
+__pycache__/
+*.pyc
+
+# Generated local/private analysis artifacts. These often contain thread
+# titles, local paths, user wording, and raw archive-derived evidence.
+/data/
+/evidence/
+/pet-runs/
+/chunks/
+/exports/
+/reports/*.private.md
+/reports/raw-*.md
+/reports/*-raw.md

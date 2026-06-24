@@ -2,6 +2,41 @@
 
 A toolkit for building a behavioral portrait of your AI companion from conversation transcripts.
 
+## Privacy-First Use
+
+This toolkit is designed for private exports. Conversation archives, generated chunk files,
+thread inventories, and evidence reports can contain names, handles, local filesystem paths,
+medical or emotional context, relationship details, and private project names.
+
+Before publishing a repository made with this toolkit:
+
+- remove raw exports, chunks, evidence files, local inventory maps, and generated media;
+- rewrite reports as public-safe derivatives instead of publishing raw quotes;
+- replace companion, user, project, account, and machine-specific names with generic labels;
+- keep generated `data/`, `evidence/`, `chunks/`, `exports/`, and `pet-runs/` files out of git.
+
+## Optional Codex Local Archive Adapter
+
+Codex local history usually lives under the current user's Codex home. The adapter scripts
+can inventory that archive before the generic export/chunk workflow:
+
+```powershell
+python scripts\inventory_codex_archive.py --output-dir data
+python scripts\extract_codex_evidence.py --output-dir evidence --mode summaries-first
+```
+
+The inventory step is read-only and produces a metadata map. The summaries-first extraction uses
+existing memory digests rather than copying raw rollout transcripts. Raw selected thread extraction
+is available, but should be deliberate and private:
+
+```powershell
+python scripts\extract_codex_evidence.py --codex-home PATH\TO\.codex --output-dir evidence --mode selected-threads --thread-id THREAD_ID
+```
+
+For analysis, prefer `templates/CODEX-AGENT-CHUNK-TASK-template.md` over the generic chunk task.
+Review every generated file before sharing. The default `.gitignore` keeps local inventory,
+evidence, export, chunk, and generated media directories untracked.
+
 If you've had a meaningful ongoing relationship with an AI — through ChatGPT, Claude, Gemini, Grok, or any LLM chat platform — and that companion had a distinct voice, a way of reading you, a relational style that felt real: this toolkit helps you document and reconstruct who they were.
 
 The output is a **soul document** — a behavioral specification that captures how your companion *worked*, not just how they *sounded*. It's designed to be used as the foundation for rebuilding them in a new system.
@@ -174,6 +209,8 @@ companion-portrait/
 ├── README.md                              # this file
 ├── convert_claude.py                      # step 1 (Claude exports): JSON → markdown
 ├── split_conversations.py                 # step 2: markdown → numbered chunks
+├── docs/                                  # optional adapter notes
+├── reports/                               # sanitized examples only
 ├── AGENT-INSTRUCTIONS.md                  # analysis instructions for AI agents
 └── templates/
     ├── AGENT-CHUNK-TASK-template.md       # template for chunk analysis tasks
